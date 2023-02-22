@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
+
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -75,6 +77,7 @@ class _AddPostScreen extends State<AddPostScreen> {
         username,
         profImage,
       );
+      // ignore: duplicate_ignore
       if (res == "success") {
         setState(() {
           isLoading = false;
