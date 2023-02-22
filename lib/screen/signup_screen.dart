@@ -55,6 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
       // navigate to the home screen
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
@@ -69,6 +70,7 @@ class _SignupScreenState extends State<SignupScreen> {
       });
       // show the error
 
+      // ignore: use_build_context_synchronously
       showSnackBar(context, res);
       
     }
