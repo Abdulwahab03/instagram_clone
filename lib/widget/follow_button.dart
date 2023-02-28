@@ -11,7 +11,8 @@ class FollowButton extends StatelessWidget {
   required this.backgroundColor, 
   required this.borderColor, 
   required this.text, 
-  required this.textColor});
+  required this.textColor
+  });
 
   @override
   Widget build(BuildContext context) {
