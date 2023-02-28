@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/provider/user_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../model/users.dart' as model;
 import '../resources/firestore_method.dart';
+import '../screen/comment_screen.dart';
 import '../utils/colors.dart';
 import '../utils/global_variable.dart';
 import '../utils/utils.dart';
@@ -140,14 +142,14 @@ class _PostCardState extends State<PostCard> {
                                         .toList()),
                                   );
                                },
-                           );
+                            );
                           },
                         icon: const Icon(Icons.more_vert),
                      )
                       : Container()
-              ],
-            ),
-          ),
+                ],
+              ),
+           ),
           // IMAGE SECTION OF THE POST
           GestureDetector(
             onDoubleTap: () {
@@ -194,9 +196,126 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
-        ]
-     ),
-          
+          // LIKE, COMMENT SECTION OF THE POST
+          Row(
+            children: [
+              LikeAnimation(
+                 isAnimating: widget.snap['likes'].contains(user.uid),
+                smallLike: true,
+                child: IconButton(
+                  icon: widget.snap['likes'].contains(user.uid)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Icons.favorite_border,
+                        ),
+                  onPressed: () => FireStoreMethod().likePost(
+                    widget.snap['postId'].toString(),
+                    user.uid,
+                    widget.snap['likes'],
+                  ),
+                ),
+              ),
+              IconButton( icon: const Icon(
+                Icons.comment_outlined,
+                ),
+              onPressed:() => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentsScreen(
+                      postId: widget.snap['postId'].toString(),
+                    ),
+                  ),
+                ),
+              ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.send,
+                  ),
+                  onPressed: () {}
+                  ),
+                    Expanded(
+                  child: Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                    icon: const Icon(Icons.bookmark_border), onPressed: () {}),
+              )
+              )
+             ],
+            ),
+             // Description and Number of comments
+             Container(
+              padding: const  EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DefaultTextStyle( style: Theme.of(context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(fontWeight: FontWeight.w800),
+                    child: Text(
+                      '${widget.snap['likes'].length} likes',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    )
+                    ),
+                  ]
+                ),
+             ),
+             Container(
+               width: double.infinity,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(color: primaryColor),
+                      children: [
+                        TextSpan(
+                          text: widget.snap['username'].toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' ${widget.snap['description']}',
+                        ),
+                      ],
+                    ),
+                  ),
+               ),
+                InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      'View all $commentLen comments',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: secondaryColor,
+                      ),
+                    ),
+                  ),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => CommentsScreen(
+                        postId: widget.snap['postId'].toString(),
+                      ),
+                    ),
+                  ),
+                ),
+                 Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
+                    style: const TextStyle(
+                      color: secondaryColor,
+                    ),
+                  ),
+                ),
+          ]
+      ),
     );
   }
 }
