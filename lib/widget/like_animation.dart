@@ -10,7 +10,7 @@ class LikeAnimation extends StatefulWidget {
     super.key,
     required this.child,
     required this.isAnimating,
-    required this.duration,
+    this.duration =  const Duration(milliseconds: 150),
     this.onEnd,
     this.smallLike = false,
   });
@@ -20,7 +20,7 @@ class LikeAnimation extends StatefulWidget {
 }
 
 class _LikeAnimationState extends State<LikeAnimation>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scale;
 
@@ -32,6 +32,15 @@ class _LikeAnimationState extends State<LikeAnimation>
       duration: Duration(milliseconds: widget.duration.inMilliseconds ~/ 2),
     );
     scale = Tween<double>(begin: 1, end: 1.2).animate(controller);
+  }
+
+  @override
+  void didUpdateWidget(covariant LikeAnimation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.isAnimating != oldWidget.isAnimating) {
+      startAnimation();
+    }
   }
 
   startAnimation() async {
