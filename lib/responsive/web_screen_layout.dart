@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram/utils/global_variable.dart';
 
 
 import '../utils/colors.dart';
@@ -92,9 +93,9 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
       ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
-        // children: homeScreenItems,
         controller: pageController,
         onPageChanged: onPageChanged,
+         children: homeScreenItems,
       ),
     );
   }
