@@ -30,6 +30,8 @@ class _MobileScreenLayout extends State<MobileScreenLayout> {
     super.dispose();
     pageController.dispose();
   }
+
+ 
   void navigationTapped(int page) {
     //Animating Page
     pageController.jumpToPage(page);
